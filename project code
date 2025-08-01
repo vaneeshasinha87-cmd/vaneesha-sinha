@@ -1,0 +1,27 @@
+#include <Servo.h>
+
+Servo feederServo;
+
+const int buttonPin = 2;
+const int ledPin = 7;
+int buttonState = 0;
+
+void setup() {
+  feederServo.attach(9);        // Attach servo to pin 9
+  pinMode(buttonPin, INPUT);
+  pinMode(ledPin, OUTPUT);
+  feederServo.write(0);         // Start at 0 degrees
+}
+
+void loop() {
+  buttonState = digitalRead(buttonPin);
+
+  if (buttonState == HIGH) {
+    digitalWrite(ledPin, HIGH);    // Turn ON LED
+    feederServo.write(90);         // Rotate to 90° (drop food)
+    delay(1000);                   // Wait for servo to rotate
+    feederServo.write(0);          // Return to start position
+    digitalWrite(ledPin, LOW);     // Turn OFF LED
+    delay(3000);                   // Delay to avoid multiple triggers
+  }
+}
